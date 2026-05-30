@@ -10,7 +10,7 @@
   body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--ink); line-height:1.6; -webkit-font-smoothing:antialiased; }
   .wrap { max-width:680px; margin:0 auto; padding:48px 24px 80px; }
   header { display:flex; align-items:center; gap:14px; margin-bottom:8px; }
-  .logo { width:56px; height:56px; border-radius:14px; background:var(--ink); color:var(--cream); display:flex; align-items:center; justify-content:center; font-size:34px; font-weight:800; }
+  .logo { width:56px; height:56px; border-radius:14px; display:block; object-fit:cover; }
   h1 { font-size:30px; font-weight:800; letter-spacing:-0.5px; }
   .tagline { color:var(--muted); font-size:16px; margin:6px 0 36px; }
   h2 { font-size:13px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin:36px 0 14px; }
@@ -27,7 +27,7 @@
 <body>
 <div class="wrap">
   <header>
-    <div class="logo">F</div>
+    <img class="logo" src="logo.png" alt="Frigie">
     <div>
       <h1>Frigie</h1>
     </div>
