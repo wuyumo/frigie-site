@@ -3,71 +3,168 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Frigie — Support</title>
+<title>Frigie — Know how many days of food you've got left</title>
+<meta name="description" content="Frigie scans your groceries and counts down how many days of each item you have left — then fills your shopping list before you run out and suggests dinners from what's in your fridge.">
 <style>
-  :root { --ink:#1a1a1c; --cream:#f3de90; --muted:#6b6b70; --bg:#faf8f3; --card:#fff; }
+  :root { --ink:#1a1a1c; --cream:#f3de90; --gold:#bb8e00; --muted:#6b6b70; --bg:#faf8f3; --card:#fff; }
   * { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
   body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--ink); line-height:1.6; -webkit-font-smoothing:antialiased; }
-  .wrap { max-width:680px; margin:0 auto; padding:48px 24px 80px; }
-  header { display:flex; align-items:center; gap:14px; margin-bottom:8px; }
-  .logo { width:56px; height:56px; border-radius:14px; display:block; object-fit:cover; }
-  h1 { font-size:30px; font-weight:800; letter-spacing:-0.5px; }
-  .tagline { color:var(--muted); font-size:16px; margin:6px 0 36px; }
-  h2 { font-size:13px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin:36px 0 14px; }
+  .wrap { max-width:980px; margin:0 auto; padding:0 24px; }
+  a { color:var(--gold); text-decoration:none; font-weight:600; }
+  a:hover { text-decoration:underline; }
+
+  /* Hero */
+  .hero { text-align:center; padding:72px 24px 48px; position:relative; overflow:hidden; }
+  .hero::before { content:""; position:absolute; top:-120px; left:50%; transform:translateX(-50%); width:560px; height:360px; background:radial-gradient(ellipse at center, rgba(243,222,144,0.55), rgba(243,222,144,0)); z-index:0; }
+  .hero > * { position:relative; z-index:1; }
+  .logo { width:104px; height:104px; border-radius:26px; box-shadow:0 8px 28px rgba(0,0,0,0.14); display:block; margin:0 auto 22px; }
+  .name { font-size:40px; font-weight:850; letter-spacing:-1px; }
+  .h-tag { font-size:27px; font-weight:800; letter-spacing:-0.5px; margin:18px auto 0; max-width:640px; line-height:1.25; }
+  .h-sub { color:var(--muted); font-size:17px; margin:16px auto 0; max-width:560px; }
+  .cta { display:inline-flex; align-items:center; gap:9px; margin-top:30px; background:var(--ink); color:#fff; font-weight:700; font-size:16px; padding:14px 26px; border-radius:999px; box-shadow:0 6px 20px rgba(0,0,0,0.16); }
+  .cta:hover { text-decoration:none; transform:translateY(-1px); }
+  .cta .soon { background:var(--cream); color:var(--ink); font-size:12px; font-weight:800; padding:3px 9px; border-radius:999px; letter-spacing:0.4px; }
+
+  /* Pain points */
+  .section { padding:56px 0; }
+  .section h2 { text-align:center; font-size:28px; font-weight:850; letter-spacing:-0.5px; margin-bottom:8px; }
+  .section .lead { text-align:center; color:var(--muted); font-size:16px; max-width:560px; margin:0 auto 40px; }
+  .pains { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  .pain { background:var(--card); border-radius:20px; padding:28px 24px; box-shadow:0 2px 10px rgba(0,0,0,0.05); }
+  .pain .emoji { font-size:34px; }
+  .pain .bad { color:#b23b3b; font-weight:700; font-size:15px; margin:14px 0 6px; }
+  .pain .good { font-weight:800; font-size:17px; line-height:1.35; margin-bottom:6px; }
+  .pain .good-sub { color:var(--muted); font-size:14.5px; }
+
+  /* Screenshots */
+  .shots { display:flex; gap:22px; overflow-x:auto; padding:8px 24px 28px; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; }
+  .shots::-webkit-scrollbar { height:0; }
+  .shot { scroll-snap-align:center; flex:0 0 auto; width:240px; text-align:center; }
+  .shot img { width:240px; border-radius:26px; box-shadow:0 10px 34px rgba(0,0,0,0.16); display:block; }
+  .shot .cap { font-size:14px; font-weight:600; color:var(--muted); margin-top:14px; }
+  .shots-hint { text-align:center; color:var(--muted); font-size:13px; margin-top:-10px; }
+
+  /* Features */
+  .feats { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .feat { background:var(--card); border-radius:16px; padding:22px; box-shadow:0 1px 3px rgba(0,0,0,0.05); }
+  .feat .fe { font-size:26px; }
+  .feat .ft { font-weight:750; font-size:16px; margin:10px 0 4px; }
+  .feat .fd { color:var(--muted); font-size:14px; }
+
+  /* FAQ */
+  .faq { max-width:680px; margin:0 auto; }
+  .faq h2 { font-size:13px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin:0 0 16px; text-align:left; }
   .card { background:var(--card); border-radius:16px; padding:22px 24px; margin-bottom:12px; box-shadow:0 1px 3px rgba(0,0,0,0.05); }
   .q { font-weight:700; font-size:17px; margin-bottom:6px; }
-  .a { color:#3a3a3e; font-size:15px; }
-  a { color:#bb8e00; text-decoration:none; font-weight:600; }
-  a:hover { text-decoration:underline; }
-  .contact { background:var(--ink); color:#fff; border-radius:16px; padding:24px; text-align:center; margin-top:8px; }
+  .ans { color:#3a3a3e; font-size:15px; }
+  .contact { max-width:680px; margin:8px auto 0; background:var(--ink); color:#fff; border-radius:18px; padding:28px; text-align:center; }
   .contact a { color:var(--cream); font-size:18px; }
-  footer { text-align:center; color:var(--muted); font-size:13px; margin-top:48px; }
+  footer { text-align:center; color:var(--muted); font-size:13px; padding:40px 0 64px; }
+
+  @media (max-width:720px) {
+    .pains, .feats { grid-template-columns:1fr; }
+    .h-tag { font-size:23px; } .name { font-size:34px; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <img class="logo" src="logo.png" alt="Frigie">
-    <div>
-      <h1>Frigie</h1>
-    </div>
+
+  <!-- ░░ HERO ░░ -->
+  <header class="hero">
+    <img class="logo" src="logo.png" alt="Frigie app icon">
+    <div class="name">Frigie</div>
+    <h1 class="h-tag">Know how many days of food you've actually got left.</h1>
+    <p class="h-sub">Scan your groceries. Frigie counts down each item to <em>your</em> real pace, fills your shopping list before you run low, and suggests dinners from what's already in your fridge.</p>
+    <!-- 上线后：把这个换成真正的 App Store 徽章 <a href="APP_STORE_URL"><img src="appstore-badge.svg"></a> -->
+    <a class="cta" href="#faq">On the App Store <span class="soon">SOON</span></a>
   </header>
-  <p class="tagline">Know what's in your fridge — and when you'll run out.</p>
 
-  <h2>Frequently asked</h2>
+  <!-- ░░ PAIN POINTS ░░ -->
+  <section class="section wrap">
+    <h2>Stop wasting food — and money</h2>
+    <p class="lead">Three everyday fridge headaches, solved.</p>
+    <div class="pains">
+      <div class="pain">
+        <div class="emoji">🥬</div>
+        <div class="bad">Food rots in the back</div>
+        <div class="good">A countdown on every item</div>
+        <div class="good-sub">Tuned to how fast your household actually eats — not a generic expiry date.</div>
+      </div>
+      <div class="pain">
+        <div class="emoji">🛒</div>
+        <div class="bad">You re-buy what you already have</div>
+        <div class="good">A list that fills itself</div>
+        <div class="good-sub">Items appear on your shopping list only when you're genuinely running low.</div>
+      </div>
+      <div class="pain">
+        <div class="emoji">🍳</div>
+        <div class="bad">"What's for dinner?"</div>
+        <div class="good">Recipes from your fridge</div>
+        <div class="good-sub">Cook ideas built from exactly what you have in stock right now.</div>
+      </div>
+    </div>
+  </section>
 
-  <div class="card">
-    <div class="q">How does Frigie know when I'll run out of something?</div>
-    <div class="a">Frigie isn't an expiry-date tracker. When you set up how many people you feed and how you eat, it estimates how fast your household goes through each item, then counts down how many days of supply you have left. The same carton of milk lasts a family a few days and one person a couple of weeks — Frigie adjusts to your real pace.</div>
-  </div>
+  <!-- ░░ SCREENSHOTS ░░ -->
+  <section class="section" style="padding-bottom:24px;">
+    <h2 style="text-align:center;font-size:28px;font-weight:850;margin-bottom:8px;">See it in action</h2>
+    <p class="shots-hint">← swipe →</p>
+    <div class="shots">
+      <div class="shot"><img src="shots/01-fridge.png" alt="Fridge with countdown rings"><div class="cap">Countdown on every item</div></div>
+      <div class="shot"><img src="shots/03-recipe.png" alt="Recipe suggestion"><div class="cap">Dinner from what you have</div></div>
+      <div class="shot"><img src="shots/02-shopping.png" alt="Shopping list"><div class="cap">A self-filling shopping list</div></div>
+      <div class="shot"><img src="shots/05-allergen.png" alt="Allergy alert"><div class="cap">Allergy alerts everywhere</div></div>
+      <div class="shot"><img src="shots/04-detail.png" alt="Item detail"><div class="cap">Tune each item to your pace</div></div>
+      <div class="shot"><img src="shots/06-chaos.png" alt="Playful fridge"><div class="cap">A fridge that's fun to open</div></div>
+    </div>
+  </section>
 
-  <div class="card">
-    <div class="q">How do I add items?</div>
-    <div class="a">Tap Scan, then photograph a grocery receipt or a single item. Frigie reads it and drops stickers into your fridge automatically — no typing. You can also add items by hand.</div>
-  </div>
+  <!-- ░░ FEATURES ░░ -->
+  <section class="section wrap">
+    <h2>Everything inside</h2>
+    <p class="lead">No account. No subscription to start. No data leaves your phone.</p>
+    <div class="feats">
+      <div class="feat"><div class="fe">📷</div><div class="ft">Scan, don't type</div><div class="fd">Photograph a receipt or an item — Frigie reads it on-device with Apple Vision.</div></div>
+      <div class="feat"><div class="fe">⏳</div><div class="ft">Consumption countdown</div><div class="fd">Days-of-supply left, based on your household's real eating pace — not expiry dates.</div></div>
+      <div class="feat"><div class="fe">🛒</div><div class="ft">Auto shopping list</div><div class="fd">Fills itself as things run low. Share the whole list as an image in a tap.</div></div>
+      <div class="feat"><div class="fe">🍳</div><div class="ft">Recipes from your fridge</div><div class="fd">Cook ideas matched to what you actually have, with step-by-step mode.</div></div>
+      <div class="feat"><div class="fe">⚠️</div><div class="ft">Allergy alerts</div><div class="fd">Flag your allergens once — Frigie warns you across the fridge, list, and recipes.</div></div>
+      <div class="feat"><div class="fe">🔒</div><div class="ft">Private by design</div><div class="fd">Everything stays on your device. No account, no cloud, no tracking.</div></div>
+    </div>
+  </section>
 
-  <div class="card">
-    <div class="q">How does the shopping list fill itself?</div>
-    <div class="a">When an item is about to run out (its countdown turns amber or red), Frigie adds it to your shopping list for you. Mark anything "used up" and it's added too. You can share the whole list as an image.</div>
-  </div>
+  <!-- ░░ FAQ + SUPPORT ░░ -->
+  <section class="section faq" id="faq">
+    <h2>Frequently asked &amp; support</h2>
+    <div class="card">
+      <div class="q">How does Frigie know when I'll run out of something?</div>
+      <div class="ans">Frigie isn't an expiry-date tracker. From how many people you feed and how you eat, it estimates how fast your household goes through each item, then counts down how many days of supply you have left. The same carton of milk lasts a family a few days and one person a couple of weeks — Frigie adjusts to your real pace.</div>
+    </div>
+    <div class="card">
+      <div class="q">How do I add items?</div>
+      <div class="ans">Tap Scan, then photograph a grocery receipt or a single item. Frigie reads it and drops stickers into your fridge automatically — no typing. You can also add items by hand.</div>
+    </div>
+    <div class="card">
+      <div class="q">How does the shopping list fill itself?</div>
+      <div class="ans">When an item is about to run out (its countdown turns amber or red), Frigie adds it to your shopping list for you. Mark anything "used up" and it's added too. You can share the whole list as an image.</div>
+    </div>
+    <div class="card">
+      <div class="q">Where is my data stored?</div>
+      <div class="ans">Entirely on your device. Frigie has no account and no cloud — your fridge, lists, and settings never leave your phone. See our <a href="privacy.html">Privacy Policy</a>.</div>
+    </div>
+    <div class="card">
+      <div class="q">Can I track non-food things?</div>
+      <div class="ans">Yes. Create custom pages for household supplies, pet food, or anything else you want to keep stocked.</div>
+    </div>
+  </section>
 
-  <div class="card">
-    <div class="q">Where is my data stored?</div>
-    <div class="a">Entirely on your device. Frigie has no account and no cloud — your fridge, lists, and settings never leave your phone. See our <a href="privacy.html">Privacy Policy</a>.</div>
-  </div>
-
-  <div class="card">
-    <div class="q">Can I track non-food things?</div>
-    <div class="a">Yes. Create custom pages for household supplies, pet food, or anything else you want to keep stocked.</div>
-  </div>
-
-  <h2>Contact us</h2>
   <div class="contact">
     <p>Questions, bugs, or ideas? We'd love to hear from you.</p>
     <p style="margin-top:8px"><a href="mailto:wuyumoawuyumo@gmail.com">wuyumoawuyumo@gmail.com</a></p>
   </div>
 
-  <footer>© 2026 Frigie · <a href="privacy.html">Privacy Policy</a></footer>
-</div>
+  <footer class="wrap">© 2026 Frigie · <a href="privacy.html">Privacy Policy</a></footer>
+
 </body>
 </html>
